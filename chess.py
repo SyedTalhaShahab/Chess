@@ -8,10 +8,8 @@ from io import BytesIO
 
 def check_and_install_package(package_name):
     try:
-        # Check if the package is installed
         __import__(package_name)
     except ImportError:
-        # If not installed, install the package
         subprocess.check_call(
             [sys.executable, "-m", "pip", "install", package_name])
 
@@ -21,16 +19,8 @@ check_and_install_package("subprocess")
 check_and_install_package("sys")
 
 
-# Importing Modules
-# import requests # type: ignore
-# import rembg # type: ignore
-
-
-# pip install rembg
-# Initialising pygame module
 pygame.init()
 
-# Setting Width and height of the Chess Game screen
 WIDTH = 1000
 HEIGHT = 800
 
@@ -44,7 +34,6 @@ big_font = pygame.font.Font('freesansbold.ttf', 50)
 timer = pygame.time.Clock()
 fps = 60
 
-# game variables and images
 white_pieces = ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook',
                 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn']
 white_locations = [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0),
@@ -57,20 +46,16 @@ black_locations = [(0, 7), (1, 7), (2, 7), (3, 7), (4, 7), (5, 7), (6, 7), (7, 7
 captured_pieces_white = []
 captured_pieces_black = []
 
-# 0 - whites turn no selection: 1-whites turn piece selected: 2- black turn no selection, 3 - black turn piece selected
 turn_step = 0
 selection = 100
 valid_moves = []
 
-
-# Load and scale images
 
 def load_and_scale(image_name, size):
     image = pygame.image.load(os.path.join("img", image_name))
     return pygame.transform.scale(image, size)
 
 
-# Black pieces
 the_black_pieces = [
     load_and_scale("BlackQueen.png", (80, 80)),
     load_and_scale("BlackKing.png", (80, 80)),
@@ -89,7 +74,6 @@ the_black_pieces_small = [
     pygame.transform.scale(the_black_pieces[5], (45, 45))
 ]
 
-# White pieces
 the_white_pieces = [
     load_and_scale("WhiteQueen.png", (80, 80)),
     load_and_scale("WhiteKing.png", (80, 80)),
@@ -107,11 +91,6 @@ the_white_pieces_small = [
     pygame.transform.scale(the_white_pieces[4], (45, 45)),
     pygame.transform.scale(the_white_pieces[5], (45, 45))
 ]
-
-# Access pieces like this:
-# black_pieces[0] is the black queen, black_pieces_small[0] is the small black queen
-# white_pieces[0] is the white queen, white_pieces_small[0] is the small white queen
-
 
 black_queen = the_black_pieces[0]
 black_queen_small = the_black_pieces_small[0]
@@ -172,13 +151,11 @@ small_black_images = [black_pawn_small, black_queen_small, black_king_small,
 
 piece_list = ['pawn', 'queen', 'king', 'knight', 'rook', 'bishop']
 
-# check variables/ flashing counter
 counter = 0
 winner = ''
 game_over = False
 
 
-# draw main game board
 def draw_board():
     counterV1 = 0
     while counterV1 < 32:
@@ -208,9 +185,6 @@ def draw_board():
 
         screen.blit(medium_font.render('FORFEIT', True, 'black'), (810, 830))
         counterV1 += 1
-
-# draw pieces onto board
-
 
 def draw_pieces():
     counterV1 = 0
@@ -273,9 +247,6 @@ def check_options(pieces, locations, turn):
 
     return all_moves_list
 
-# check king valid moves
-
-
 def check_king(position, color):
     moves_list = []
     if color == 'white':
@@ -284,7 +255,6 @@ def check_king(position, color):
     else:
         friends_list = black_locations
         enemies_list = white_locations
-    # 8 squares to check for kings, they can go one square any direction
     targets = [(1, 0), (1, 1), (1, -1), (-1, 0),
                (-1, 1), (-1, -1), (0, 1), (0, -1)]
     counterV1 = 0
@@ -297,7 +267,6 @@ def check_king(position, color):
     return moves_list
 
 
-# check queen valid moves
 def check_queen(position, color):
     moves_list = check_bishop(position, color)
     second_list = check_rook(position, color)
@@ -309,8 +278,6 @@ def check_queen(position, color):
 
     return moves_list
 
-
-# check bishop moves
 def check_bishop(position, color):
     moves_list = []
     if color == 'white':
@@ -322,7 +289,6 @@ def check_bishop(position, color):
 
     counterv1 = 0
     while counterv1 < 4:
-        # up-right, up-left, down-right, down-left
         path = True
         chain = 1
         match counterv1:
